@@ -1,0 +1,22 @@
+{
+  "name": "electron-regedit",
+  "version": "1.0.0",
+  "description": "File associations, file icons & open with... for electron apps",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "windows",
+    "registry",
+    "electron",
+    "file",
+    "association",
+    "open",
+    "with",
+    "default",
+    "application"
+  ],
+  "author": "Tympanix",
+  "license": "MIT"
+}
