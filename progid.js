@@ -1,0 +1,90 @@
+'use strict';
+
+const Registry = require('winreg')
+const path = require('path')
+const {app} = require('electron')
+const Q = require('q')
+
+const {$create, $set} = require('./util')
+const ProgShell = require('./progshell')
+
+function ProgId({
+    progExt = '',
+    appName = app.getName(),
+    hive = Registry.HKCU,
+    fileIcon,
+    shell = [],
+    extensions = []
+}) {
+    this.progId = progExt ? `${appName}.${progExt}` : `${appName}`
+    this.appName = appName
+    this.hive = hive
+    this.fileIcon = fileIcon
+    this.extensions = extensions
+    this.shell = bindShells(this, shell)
+    this.BASE_KEY = `\\Software\\Classes\\${this.appName}`
+
+}
+
+function bindShells(prog, shell) {
+    if (Array.isArray(shell) && shell.length === 0) {
+        shell.push(new ProgShell({}))
+    }
+
+    return shell.map((s) => s.bindProg(prog))
+}
+
+ProgId.prototype.install = function () {
+    if(process.platform !== 'win32') {
+        return false;
+    }
+
+    let self = this
+
+    let registry = new Registry({
+        hive: this.hive,
+        key: this.BASE_KEY
+    })
+
+    return $create(registry)
+        .then(() => registerFileIcon())
+        .then(() => registerShellCommands())
+        .then(() => registerFileAssociations())
+
+
+    function registerFileIcon() {
+        if (!self.fileIcon) return
+
+        let iconPath
+        if (path.isAbsolute(self.fileIcon)) {
+            iconPath = self.fileIcon
+        } else {
+            iconPath = path.join(path.basename(process.execPath), self.fileIcon)
+        }
+
+        return $set(registry, 'DefaultIcon', Registry.REG_SZ, iconPath)
+    }
+
+    function registerShellCommands() {
+        let shells = self.shell.map(shell => shell.install())
+        return Q.all(shells)
+    }
+
+    function registerFileAssociations() {
+        let extensions = self.extensions.map((ext) => registerFileExtension(ext))
+        return Q.all(extensions)
+    }
+
+    function registerFileExtension(ext) {
+        let registry = new Registry({
+            hive: self.hive,
+            key: `\\Software\\Classes\\.${ext}\\OpenWithProgids`
+        })
+
+        return $create(registry).then(() =>
+            $set(registry, self.progId, Registry.REG_SZ, '')
+        )
+    }
+};
+
+module.exports = ProgId

@@ -18,5 +18,13 @@
     "application"
   ],
   "author": "Tympanix",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "q": "^1.4.1",
+    "winreg": "^1.2.2"
+  },
+  "devDependencies": {
+    "electron": "^1.4.15",
+    "electron-prebuilt": "^1.4.13"
+  }
 }
