@@ -59,7 +59,7 @@ ProgId.prototype.install = function () {
         if (path.isAbsolute(self.icon)) {
             iconPath = self.icon
         } else {
-            iconPath = path.join(path.basename(process.execPath), self.icon)
+            iconPath = path.join(process.execPath, '..', self.icon)
         }
 
         let defaultIcon = new Registry({
