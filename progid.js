@@ -12,14 +12,14 @@ function ProgId({
     progExt = '',
     appName = app.getName(),
     hive = Registry.HKCU,
-    fileIcon,
+    icon,
     shell = [],
     extensions = []
 }) {
     this.progId = progExt ? `${appName}.${progExt}` : `${appName}`
     this.appName = appName
     this.hive = hive
-    this.fileIcon = fileIcon
+    this.icon = icon
     this.extensions = extensions
     this.shell = bindShells(this, shell)
     this.BASE_KEY = `\\Software\\Classes\\${this.appName}`
@@ -47,22 +47,28 @@ ProgId.prototype.install = function () {
     })
 
     return $create(registry)
-        .then(() => registerFileIcon())
+        .then(() => registerIcon())
         .then(() => registerShellCommands())
         .then(() => registerFileAssociations())
 
 
-    function registerFileIcon() {
-        if (!self.fileIcon) return
+    function registerIcon() {
+        if (!self.icon) return
 
         let iconPath
-        if (path.isAbsolute(self.fileIcon)) {
-            iconPath = self.fileIcon
+        if (path.isAbsolute(self.icon)) {
+            iconPath = self.icon
         } else {
-            iconPath = path.join(path.basename(process.execPath), self.fileIcon)
+            iconPath = path.join(path.basename(process.execPath), self.icon)
         }
 
-        return $set(registry, 'DefaultIcon', Registry.REG_SZ, iconPath)
+        let defaultIcon = new Registry({
+            hive: self.hive,
+            key: `${self.BASE_KEY}\\DefaultIcon`
+        })
+
+        return $create(defaultIcon)
+            .then(() => $set(defaultIcon, Registry.DEFAULT_VALUE, Registry.REG_SZ, iconPath))
     }
 
     function registerShellCommands() {
