@@ -21,6 +21,12 @@ function ShellOption({
 }
 
 ShellOption.OPEN = 'open'
+ShellOption.OPEN_NEW = 'opennew'
+ShellOption.PRINT = 'print'
+ShellOption.EXPLORE = 'explore'
+ShellOption.FIND = 'find'
+ShellOption.OPEN_AS = 'openas'
+ShellOption.PROPERTIES = 'properties'
 ShellOption.EDIT = 'edit'
 ShellOption.PREVIEW = 'preview'
 
