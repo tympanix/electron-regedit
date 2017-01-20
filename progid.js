@@ -6,7 +6,7 @@ const {app} = require('electron')
 const Q = require('q')
 
 const {$create, $set} = require('./util')
-const ProgShell = require('./progshell')
+const ShellOption = require('./shelloption')
 
 function ProgId({
     progExt = '',
@@ -28,7 +28,7 @@ function ProgId({
 
 function bindShells(prog, shell) {
     if (Array.isArray(shell) && shell.length === 0) {
-        shell.push(new ProgShell({}))
+        shell.push(new ShellOption({}))
     }
 
     return shell.map((s) => s.bindProg(prog))

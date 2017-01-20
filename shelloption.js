@@ -4,7 +4,7 @@ const {app} = require('electron')
 
 const {$create, $set} = require('./util')
 
-function ProgShell({
+function ShellOption({
     verb = 'open',
     action = undefined,
     icon = undefined,
@@ -16,18 +16,18 @@ function ProgShell({
     this.command = command
 }
 
-ProgShell.OPEN = 'open'
-ProgShell.EDIT = 'edit'
-ProgShell.PREVIEW = 'preview'
+ShellOption.OPEN = 'open'
+ShellOption.EDIT = 'edit'
+ShellOption.PREVIEW = 'preview'
 
-ProgShell.prototype.bindProg = function (progid) {
+ShellOption.prototype.bindProg = function (progid) {
     this.progid = progid
     return this
 };
 
-ProgShell.prototype.install = function () {
+ShellOption.prototype.install = function () {
     if (!this.progid) {
-        throw new Error('ProgShell must be part of a ProgId')
+        throw new Error('ShellOption must be part of a ProgId')
         return
     }
 
@@ -68,4 +68,4 @@ ProgShell.prototype.install = function () {
     }
 };
 
-module.exports = ProgShell
+module.exports = ShellOption
