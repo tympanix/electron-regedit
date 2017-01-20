@@ -31,9 +31,11 @@ Regedit.installAll()
 ```
 
 ### Squirrel integration
-You will need to call ```Regedit.installAll()``` and ```Regedit.uninstallAll()``` when installing/uninstalling your application to clean up the registry. If you are using Squirrel there is a helping function to handle this 
+You will need to call ```Regedit.installAll()``` and ```Regedit.uninstallAll()``` when installing/uninstalling your application to clean up the registry. If you are using Squirrel there is a helping function to handle this. It is **very** important that all instantions of ```new ProgId({...})``` have been done **before** handling Squirrel events or installing/uninstalling into the registry.
 ```javascript
 const {Regedit} = require('electron-regedit')
+
+//... instantiate your ProgIds
 
 if (Regedit.squirrelStartupEvent()) return
 
