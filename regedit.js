@@ -1,4 +1,5 @@
 const { app } = require('electron');
+const Q = require('q')
 
 function Regedit() {
 
@@ -11,11 +12,11 @@ Regedit.add = function(progid) {
 }
 
 Regedit.installAll = function() {
-    Regedit.progIds.forEach(progId => progId.install())
+    return Q.all(Regedit.progIds.map(progId => progId.install()))
 }
 
 Regedit.uninstallAll = function() {
-    Regedit.progIds.forEach(progId => progId.uninstall())
+    return Q.all(Regedit.progIds.map(progId => progId.uninstall()))
 }
 
 Regedit.squirrelStartupEvent = function() {
@@ -27,12 +28,10 @@ Regedit.squirrelStartupEvent = function() {
     switch (squirrelCommand) {
         case '--squirrel-install':
         case '--squirrel-updated':
-            Regedit.installAll()
-            app.quit();
+            Regedit.installAll().finally(() => app.quit())
             return true;
         case '--squirrel-uninstall':
-            Regedit.uninstallAll()
-            app.quit();
+            Regedit.uninstallAll().finally(() => app.quit())
             return true;
         case '--squirrel-obsolete':
             app.quit();
