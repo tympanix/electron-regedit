@@ -11,6 +11,7 @@ const ShellOption = require('./shelloption')
 function ProgId({
     progExt = '',
     appName = app.getName(),
+    friendlyAppName = undefined,
     hive = Registry.HKCU,
     icon,
     shell = [],
@@ -20,10 +21,10 @@ function ProgId({
     this.appName = appName
     this.hive = hive
     this.icon = icon
+    this.friendlyAppName = friendlyAppName
     this.extensions = extensions
     this.shell = bindShells(this, shell)
     this.BASE_KEY = `\\Software\\Classes\\${this.appName}`
-
 }
 
 function bindShells(prog, shell) {

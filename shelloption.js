@@ -8,10 +8,14 @@ function ShellOption({
     verb = 'open',
     action = undefined,
     icon = undefined,
+    friendlyAppName = undefined,
+    selected = false,
     command = `"${process.execPath}" "%1"`
 }) {
     this.verb = verb,
     this.action = action,
+    this.selected = selected,
+    this.friendlyAppName = friendlyAppName,
     this.icon = icon,
     this.command = command
 }
@@ -42,6 +46,8 @@ ShellOption.prototype.install = function () {
         .then(() => registerCommand(registry))
         .then(() => registerAction(registry.parent))
         .then(() => registerIcon(registry.parent))
+        .then(() => registerFriendlyAppName(registry.parent))
+        .then(() => registerSelected(registry.parent.parent))
 
 
     function registerCommand(registry) {
@@ -65,6 +71,22 @@ ShellOption.prototype.install = function () {
         if (!self.icon) return
 
         return $set(registry, 'Icon', Registry.REG_SZ, self.icon)
+    }
+
+    function registerSelected(registry) {
+        if (self.selected !== true) return
+
+        return $set(registry, Registry.DEFAULT_VALUE, Registry.REG_SZ, self.verb)
+    }
+
+    function registerFriendlyAppName(registry) {
+        const KEY = 'FriendlyAppName'
+        if (self.friendlyAppName) {
+            return $set(registry, KEY, Registry.REG_SZ, self.friendlyAppName)
+        }
+        if (self.progid.friendlyAppName) {
+            return $set(registry, KEY, Registry.REG_SZ, self.progid.friendlyAppName)
+        }
     }
 };
 
