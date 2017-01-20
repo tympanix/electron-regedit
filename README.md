@@ -22,8 +22,8 @@ new ProgId({
     extensions: ['myapp'],
     shell: [
         new ShellOption({verb: ShellOption.OPEN}),
-        new ShellOption({verb: ShellOption.EDIT}),
-        new ShellOption({verb: ShellOption.PRINT})
+        new ShellOption({verb: ShellOption.EDIT, args: ['--edit']}),
+        new ShellOption({verb: ShellOption.PRINT, args: ['--print']})
     ]
 })
 
