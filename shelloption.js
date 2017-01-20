@@ -8,15 +8,17 @@ function ShellOption({
     verb = 'open',
     action = undefined,
     icon = undefined,
+    args = ["%1"],
     friendlyAppName = undefined,
     selected = false,
-    command = `"${process.execPath}" "%1"`
+    command = process.execPath
 }) {
-    this.verb = verb,
-    this.action = action,
-    this.selected = selected,
-    this.friendlyAppName = friendlyAppName,
-    this.icon = icon,
+    this.verb = verb
+    this.action = action
+    this.selected = selected
+    this.friendlyAppName = friendlyAppName
+    this.icon = icon
+    this.args = args
     this.command = command
 }
 
@@ -58,7 +60,8 @@ ShellOption.prototype.install = function () {
 
     function registerCommand(registry) {
         console.log('Register command');
-        return $set(registry, Registry.DEFAULT_VALUE, Registry.REG_SZ, self.command)
+        command = [`"${self.command}"`].concat(self.args.map((arg) => `"${arg}"`))
+        return $set(registry, Registry.DEFAULT_VALUE, Registry.REG_SZ, command.join(' '))
     }
 
     function registerAction(registry) {
