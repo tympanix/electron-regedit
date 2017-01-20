@@ -5,12 +5,14 @@ const path = require('path')
 const {app} = require('electron')
 const Q = require('q')
 
-const {$create, $set} = require('./util')
+const {$create, $set, $destroy} = require('./util')
 const ShellOption = require('./shelloption')
+const Regedit = require('./regedit')
 
 function ProgId({
     progExt = '',
     appName = app.getName(),
+    description = undefined,
     friendlyAppName = undefined,
     hive = Registry.HKCU,
     icon,
@@ -19,12 +21,14 @@ function ProgId({
 }) {
     this.progId = progExt ? `${appName}.${progExt}` : `${appName}`
     this.appName = appName
+    this.description = description
     this.hive = hive
     this.icon = icon
     this.friendlyAppName = friendlyAppName
     this.extensions = extensions
     this.shell = bindShells(this, shell)
     this.BASE_KEY = `\\Software\\Classes\\${this.appName}`
+    Regedit.add(this)
 }
 
 function bindShells(prog, shell) {
@@ -34,6 +38,21 @@ function bindShells(prog, shell) {
 
     return shell.map((s) => s.bindProg(prog))
 }
+
+ProgId.prototype.uninstall = function () {
+    if(process.platform !== 'win32') {
+        return false;
+    }
+
+    let self = this
+
+    let registry = new Registry({
+        hive: this.hive,
+        key: this.BASE_KEY
+    })
+
+    return $destroy(registry)
+};
 
 ProgId.prototype.install = function () {
     if(process.platform !== 'win32') {
@@ -48,10 +67,15 @@ ProgId.prototype.install = function () {
     })
 
     return $create(registry)
+        .then(() => registerDescription())
         .then(() => registerIcon())
         .then(() => registerShellCommands())
         .then(() => registerFileAssociations())
 
+    function registerDescription() {
+        if (!self.description) return
+        return $set(registry, Registry.DEFAULT_VALUE, Registry.REG_SZ, self.description)
+    }
 
     function registerIcon() {
         if (!self.icon) return

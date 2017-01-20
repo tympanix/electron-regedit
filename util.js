@@ -23,3 +23,7 @@ exports.$create = function(registry, ...args) {
 exports.$set = function(registry, ...args) {
     return $call(registry, 'set', ...args)
 }
+
+exports.$destroy = function(registry, ...args) {
+    return $call(registry, 'destroy', ...args)
+}
