@@ -11,7 +11,7 @@ function ShellOption({
     args = ["%1"],
     friendlyAppName = undefined,
     selected = false,
-    command = process.execPath
+    command = undefined
 }) {
     this.verb = verb
     this.action = action
@@ -59,7 +59,15 @@ ShellOption.prototype.install = function () {
 
 
     function registerCommand(registry) {
-        command = [`"${self.command}"`].concat(self.args.map((arg) => `"${arg}"`))
+        if (!self.command) {
+            if (self.progid.squirrel) {
+                let exec = self.progid.squirrel === true ? `${app.getName()}.exe` : self.progid.squirrel
+                self.command = path.join(path.dirname(process.execPath), '..', exec)
+            } else {
+                self.command = process.execPath
+            }
+        }
+        let command = [`"${self.command}"`].concat(self.args.map((arg) => `"${arg}"`))
         return $set(registry, Registry.DEFAULT_VALUE, Registry.REG_SZ, command.join(' '))
     }
 

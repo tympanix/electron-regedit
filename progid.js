@@ -16,6 +16,7 @@ function ProgId({
     description = undefined,
     friendlyAppName = undefined,
     hive = Registry.HKCU,
+    squirrel = false,
     icon,
     shell = [],
     extensions = []
@@ -25,6 +26,7 @@ function ProgId({
     this.description = description
     this.hive = hive
     this.icon = icon
+    this.squirrel = squirrel
     this.friendlyAppName = friendlyAppName
     this.extensions = extensions
     this.shell = bindShells(this, shell)
