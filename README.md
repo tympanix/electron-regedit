@@ -15,9 +15,7 @@ As a short documentation, here is how the module is used:
 const {ProgId, ShellOption, Regedit} = require('electron-regedit')
 
 new ProgId({
-    appName: 'My App',
     description: 'My App File',
-    friendlyAppName: 'My App Alias',
     icon: 'myicon.ico',
     extensions: ['myapp'],
     shell: [
