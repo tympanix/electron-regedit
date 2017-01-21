@@ -1,6 +1,6 @@
 {
   "name": "electron-regedit",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "File associations, file icons & open with... for electron apps",
   "main": "index.js",
   "scripts": {
