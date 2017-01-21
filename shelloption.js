@@ -95,10 +95,13 @@ ShellOption.prototype.install = function () {
 
     function registerFriendlyAppName(registry) {
         const KEY = 'FriendlyAppName'
+
         if (self.friendlyAppName) {
+            if (self.friendlyAppName === true) self.friendlyAppName = app.getName()
             return $set(registry, KEY, Registry.REG_SZ, self.friendlyAppName)
         }
         if (self.progid.friendlyAppName) {
+            if (self.progid.friendlyAppName === true) self.progid.friendlyAppName = app.getName()
             return $set(registry, KEY, Registry.REG_SZ, self.progid.friendlyAppName)
         }
     }
