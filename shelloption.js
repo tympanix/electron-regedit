@@ -34,6 +34,10 @@ ShellOption.PREVIEW = 'preview'
 
 ShellOption.prototype.bindProg = function (progid) {
     this.progid = progid
+    if (this.squirrel === undefined) this.squirrel = this.progid.squirrel
+    if (this.friendlyAppName === undefined) this.friendlyAppName = this.progid.friendlyAppName
+    if (this.squirrel) this.args.unshift('--process-start-args')
+
     return this
 };
 
@@ -60,8 +64,8 @@ ShellOption.prototype.install = function () {
 
     function registerCommand(registry) {
         if (!self.command) {
-            if (self.progid.squirrel) {
-                let exec = self.progid.squirrel === true ? `${app.getName()}.exe` : self.progid.squirrel
+            if (self.squirrel) {
+                let exec = self.squirrel === true ? `${app.getName()}.exe` : self.squirrel
                 self.command = path.join(path.dirname(process.execPath), '..', exec)
             } else {
                 self.command = process.execPath
@@ -99,10 +103,6 @@ ShellOption.prototype.install = function () {
         if (self.friendlyAppName) {
             if (self.friendlyAppName === true) self.friendlyAppName = app.getName()
             return $set(registry, KEY, Registry.REG_SZ, self.friendlyAppName)
-        }
-        if (self.progid.friendlyAppName) {
-            if (self.progid.friendlyAppName === true) self.progid.friendlyAppName = app.getName()
-            return $set(registry, KEY, Registry.REG_SZ, self.progid.friendlyAppName)
         }
     }
 };
