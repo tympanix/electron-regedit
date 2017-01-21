@@ -1,15 +1,14 @@
 const Q = require('q')
+const debug = require('./debug')
 
 function $call(registry, fn, ...args){
     let deferred = Q.defer();
-    console.log("Calling with", ...args);
     registry[fn](...args, function(err) {
         if (err) {
+            debug(err)
             deferred.reject(new Error(err))
         } else {
-            console.log("Register resolve");
             let result = Array.prototype.splice.apply(arguments, [1])
-            console.log("Result", result);
             deferred.resolve(...result)
         }
     })

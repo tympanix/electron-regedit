@@ -1,5 +1,6 @@
 const { app } = require('electron');
 const Q = require('q')
+const debug = require('./debug')
 
 function Regedit() {
 
@@ -28,11 +29,14 @@ Regedit.squirrelStartupEvent = function() {
     switch (squirrelCommand) {
         case '--squirrel-install':
         case '--squirrel-updated':
+            debug('Squirrel install/update')
             Regedit.installAll().finally(() => app.quit())
             return true;
         case '--squirrel-uninstall':
+            debug('Squirrel uninstall')
             Regedit.uninstallAll().finally(() => app.quit())
             return true;
+            debug('Squirrel obsolete')
         case '--squirrel-obsolete':
             app.quit();
             return true;

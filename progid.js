@@ -8,6 +8,7 @@ const Q = require('q')
 const {$create, $set, $destroy} = require('./util')
 const ShellOption = require('./shelloption')
 const Regedit = require('./regedit')
+const debug = require('./debug')
 
 function ProgId({
     progExt = '',
@@ -71,6 +72,7 @@ ProgId.prototype.install = function () {
         .then(() => registerIcon())
         .then(() => registerShellCommands())
         .then(() => registerFileAssociations())
+        .then(() => debug(`Installed registry "${this.progId}" sucessfully`))
 
     function registerDescription() {
         if (!self.description) return

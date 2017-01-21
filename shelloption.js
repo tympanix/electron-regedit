@@ -59,14 +59,11 @@ ShellOption.prototype.install = function () {
 
 
     function registerCommand(registry) {
-        console.log('Register command');
         command = [`"${self.command}"`].concat(self.args.map((arg) => `"${arg}"`))
         return $set(registry, Registry.DEFAULT_VALUE, Registry.REG_SZ, command.join(' '))
     }
 
     function registerAction(registry) {
-        console.log('Register action');
-
         if (self.action === undefined && self.verb === 'open') {
             self.action = `Open with ${self.progid.appName}`
         }
