@@ -1,7 +1,7 @@
 # electron-regedit
 File associations, file icons &amp; open with... for electron apps
 
-This module allow you to register your app in the windows registry, manipulate context menus & handle native open, edit, print, preview actions ect.
+This module allows you to register your app in the windows registry, manipulate context menus & handle native open, edit, print, preview actions ect.
 
 ## Installation
 ```shell
