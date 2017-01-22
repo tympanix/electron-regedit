@@ -11,6 +11,7 @@ function ShellOption({
     args = ["%1"],
     friendlyAppName = undefined,
     selected = false,
+    squirrel = false,
     command = undefined
 }) {
     this.verb = verb
@@ -19,6 +20,7 @@ function ShellOption({
     this.friendlyAppName = friendlyAppName
     this.icon = icon
     this.args = args
+    this.squirrel = squirrel
     this.command = command
 }
 
@@ -88,7 +90,14 @@ ShellOption.prototype.install = function () {
     function registerIcon(registry) {
         if (!self.icon) return
 
-        return $set(registry, 'Icon', Registry.REG_SZ, self.icon)
+        let iconPath
+        if (path.isAbsolute(self.icon)) {
+            iconPath = self.icon
+        } else {
+            iconPath = path.join(process.execPath, '..', self.icon)
+        }
+
+        return $set(registry, 'Icon', Registry.REG_SZ, iconPath)
     }
 
     function registerSelected(registry) {
