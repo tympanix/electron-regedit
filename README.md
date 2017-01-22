@@ -8,7 +8,7 @@ This module allow you to register your app in the windows registry, manipulate c
 npm install electron-regedit
 ```
 
-## Documentation
+## Usage
 ### Toy Example
 As a short documentation, here is how the module is used:
 ```javascript
@@ -39,3 +39,6 @@ if (Regedit.squirrelStartupEvent()) return
 
 //... the rest of your application code
 ```
+
+# Documentation
+Please see the [wiki](https://github.com/Tympanix/electron-regedit/wiki) for detailed information
