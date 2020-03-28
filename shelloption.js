@@ -67,7 +67,7 @@ ShellOption.prototype.install = function () {
     function registerCommand(registry) {
         if (!self.command) {
             if (self.squirrel) {
-                let exec = self.squirrel === true ? `${app.getName()}.exe` : self.squirrel
+                let exec = self.squirrel === true ? `${app.name}.exe` : self.squirrel
                 self.command = path.join(path.dirname(process.execPath), '..', exec)
             } else {
                 self.command = process.execPath
@@ -110,7 +110,7 @@ ShellOption.prototype.install = function () {
         const KEY = 'FriendlyAppName'
 
         if (self.friendlyAppName) {
-            if (self.friendlyAppName === true) self.friendlyAppName = app.getName()
+            if (self.friendlyAppName === true) self.friendlyAppName = app.name
             return $set(registry, KEY, Registry.REG_SZ, self.friendlyAppName)
         }
     }
