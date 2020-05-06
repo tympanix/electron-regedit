@@ -11,7 +11,7 @@ function ShellOption({
     args = ["%1"],
     friendlyAppName = undefined,
     selected = false,
-    squirrel = false,
+    squirrel = undefined,
     command = undefined
 }) {
     this.verb = verb
