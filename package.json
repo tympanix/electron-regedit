@@ -25,6 +25,6 @@
     "winreg": "^1.2.2"
   },
   "devDependencies": {
-    "electron": "^1.4.15"
+    "electron": "^8.0.0"
   }
 }
