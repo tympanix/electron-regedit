@@ -12,7 +12,7 @@ const debug = require('./debug')
 
 function ProgId({
     progExt = '',
-    appName = app.name,
+    appName = app.getName(),
     description = undefined,
     friendlyAppName = undefined,
     hive = Registry.HKCU,
